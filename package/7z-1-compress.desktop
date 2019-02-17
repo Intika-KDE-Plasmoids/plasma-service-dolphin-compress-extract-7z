@@ -1,11 +1,18 @@
+# Dolphin Services Easy Quick Install Suite 
+# https://github.com/Intika-Linux-Plasmoid
+# Contact: intika@librefox.org
+# Release: 2019 intika
+# License: GPL-3.0 
+# Version: 5.21
+
 [Desktop Entry]
 Type=Service
 Actions=compress_7ZIP;compress_RAR;compress_TAR;compress_TAR7ZIP;compress_TARBZIP;compress_TARGZ;compress_TGZ;compress_ZIP;
 Encoding=UTF-8
-Version=1.4
 ServiceTypes=KonqPopupMenu/Plugin,inode/directory,all/allfiles
 X-KDE-Priority=TopLevel
 X-KDE-Submenu=Compress 7z
+Version=5.21
 
 [Desktop Action compress_RAR]
 Exec=bash -c 'dir=$(dirname "$1"); cd "$dir"; files=""; y="0"; for i in "$@"; do file=$(basename "$i"); files="$files"" \\"""$file""\\""; y=$((y+1)); done; if [ $y -gt 1 ];then name=$(TITLE="Name of archive"; TEXT="Please enter a name for this archive:"; INIT="archive"; name=$(kdialog --title "$TITLE" --inputbox "$TEXT" "$INIT"); case $? in 0) getname="$name";; 1) getname="";; esac; echo "$getname"; "$getname"); if [ "$name" == "" ]; then kdialog --title "Compress" --error "Compression aborted!"; exit; fi; else name=$(basename "$1"); fi; archname="$name"".rar"; exec="rar a -o+ ""\\"$archname\\"""$files"; overw="0"; if ( [ -d "$archname" ] || [ -f "$archname" ] ); then echo "file/folder exists"; overw=$(kdialog --warningyesno "This folder already includes an archive with the same name. Do you want to overwrite it?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; if [ "$overw" == "0" ]; then echo "$exec" > .comparchive.sh && chmod a=r+w+x .comparchive.sh; sh .comparchive.sh && rm .comparchive.sh; kdialog --title "Compress" --msgbox "Compression done!"; else kdialog --title "Compress" --error "Compression aborted!"; fi;' 'dummy-param' %U

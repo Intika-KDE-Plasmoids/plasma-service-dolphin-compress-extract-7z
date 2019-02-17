@@ -1,11 +1,18 @@
+# Dolphin Services Easy Quick Install Suite 
+# https://github.com/Intika-Linux-Plasmoid
+# Contact: intika@librefox.org
+# Release: 2019 intika
+# License: GPL-3.0 
+# Version: 5.21
+
 [Desktop Entry]
 Type=Service
 Actions=extract_here;extract_to_folder;extract_to;extract_pw_here;extract_pw_to_folder;extract_pw_to;
 Encoding=UTF-8
-Version=1.4
 ServiceTypes=KonqPopupMenu/Plugin,KonqPopupMenu/Plugin,application/x-ace
 X-KDE-Priority=TopLevel
 X-KDE-Submenu=Extract 7z
+Version=5.21
 
 [Desktop Action extract_here]
 Exec=bash -c 'nameext=$(basename "$1"); name=${nameext%.*}; name2=${name%.*}; dir=$(dirname "$1"); cd "$dir"; overw="0"; if ( [ -d "$name2" ] || [ -f "$name2" ] ); then echo "file/folder exists"; overw=$(kdialog --warningyesno "Existing data must be overwritten to extract this archive. Do you want to overwrite them?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; if [ "$overw" == "0" ]; then mkdir "$name2"; cp "$nameext" "$name2"; cd "$name2"; unace x -o -y "$nameext"; rm "$nameext"; kdialog --title "Extract" --msgbox "Extraction done!"; else kdialog --title "Extract" --error "Extraction aborted!"; fi;' 'dummy-param' %F
