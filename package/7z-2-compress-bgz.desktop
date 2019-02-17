@@ -1,0 +1,38 @@
+[Desktop Entry]
+Type=Service
+Actions=compress_BZIP;compress_GZIP;
+Encoding=UTF-8
+Version=1.4
+ServiceTypes=KonqPopupMenu/Plugin,all/allfiles
+X-KDE-Priority=TopLevel
+X-KDE-Submenu=Compress 7z
+
+[Desktop Action compress_BZIP]
+Exec=bash -c 'dir=$(dirname "$1"); cd "$dir"; files=""; y="0"; for i in "$@"; do file=$(basename "$i"); files="$files"" \\"""$file""\\""; y=$((y+1)); done; if [ $y -gt 1 ]; then name=$(TITLE="Name of archive"; TEXT="Please enter a name for this archive:"; INIT="archive"; name=$(kdialog --title "$TITLE" --inputbox "$TEXT" "$INIT"); case $? in 0) getname="$name";; 1) getname="";; esac; echo "$getname"; "$getname"); if [ "$name" == "" ]; then kdialog --title "Compress" --error "Compression aborted!"; exit; fi; archname="$name"".tar.bz2"; exec="tar -cf ""\\"$archname\\"""$files"" --bzip2 --overwrite"; else name=$(basename "$1"); archname="$name"".bz2"; exec="bzip2 -z -f ""$files"; fi; overw="0"; if ( [ -d "$archname" ] || [ -f "$archname" ] ); then echo "file/folder exists"; overw=$(kdialog --warningyesno "This folder already includes an archive with the same name. Do you want to overwrite it?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; if [ "$overw" == "0" ]; then echo "$exec" > .comparchive.sh && chmod a=r+w+x .comparchive.sh; sh .comparchive.sh && rm .comparchive.sh; kdialog --title "Compress" --msgbox "Compression done!"; else kdialog --title "Compress" --error "Compression aborted!"; fi;' 'dummy-param' %U
+Icon=application-x-archive
+Name=Compress to bz2
+Name[de]=Komprimieren in bz2
+Name[es]=Comprimir como bz2
+Name[it]=Comprimi in bz2
+Name[fr]=Compresser en bz2
+Name[zh_CN]=压缩为 bz2
+Name[pl]=Spakuj jako bz2
+Name[pt_BR]=Comprimir como bz2
+Name[cs]=Komprimovat do bz2
+Name[tr]= bz2 olarak sıkıştır
+Name[da]= Komprimér til bz2
+
+[Desktop Action compress_GZIP]
+Exec=bash -c 'dir=$(dirname "$1"); cd "$dir"; files=""; y="0"; for i in "$@"; do file=$(basename "$i"); files="$files"" \\"""$file""\\""; y=$((y+1)); done; if [ $y -gt 1 ]; then name=$(TITLE="Name of archive"; TEXT="Please enter a name for this archive:"; INIT="archive"; name=$(kdialog --title "$TITLE" --inputbox "$TEXT" "$INIT"); case $? in 0) getname="$name";; 1) getname="";; esac; echo "$getname"; "$getname"); if [ "$name" == "" ]; then kdialog --title "Compress" --error "Compression aborted!"; exit; fi; archname="$name"".tar.gz"; exec="tar -czf ""\\"$archname\\"""$files"" --overwrite"; else name=$(basename "$1"); archname="$name"".gz"; exec="gzip -r -f ""$files"; fi; overw="0"; if ( [ -d "$archname" ] || [ -f "$archname" ] ); then echo "file/folder exists"; overw=$(kdialog --warningyesno "This folder already includes an archive with the same name. Do you want to overwrite it?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; if [ "$overw" == "0" ]; then echo "$exec" > .comparchive.sh && chmod a=r+w+x .comparchive.sh; sh .comparchive.sh && rm .comparchive.sh; kdialog --title "Compress" --msgbox "Compression done!"; else kdialog --title "Compress" --error "Compression aborted!"; fi;' 'dummy-param' %U
+Icon=application-x-archive
+Name=Compress to gz
+Name[de]=Komprimieren in gz
+Name[es]=Comprimir como gz
+Name[it]=Comprimi in gz
+Name[fr]=Compresser en gz
+Name[zh_CN]=压缩为 gz
+Name[pl]=Spakuj jako gz
+Name[pt_BR]=Comprimir como gz
+Name[cs]=Komprimovat do gz
+Name[tr]= gz olarak sıkıştır
+Name[da]= Komprimér til gz

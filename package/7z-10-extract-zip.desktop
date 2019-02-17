@@ -1,0 +1,53 @@
+[Desktop Entry]
+Type=Service
+Actions=extract_here;extract_to_folder;extract_to;
+Encoding=UTF-8
+Version=1.4
+ServiceTypes=KonqPopupMenu/Plugin,KonqPopupMenu/Plugin,application/zip
+X-KDE-Priority=TopLevel
+X-KDE-Submenu=Extract 7z
+
+[Desktop Action extract_here]
+Exec=bash -c 'nameext=$(basename "$1"); dir=$(dirname "$1"); cd "$dir"; unzip -Z -1 "$nameext" > ".""$nameext""_files"; rowcount=$(cat ".""$nameext""_files" | wc -l); i="1"; hits="0"; while ( [ $i -lt $((rowcount+1)) ] && [ $hits -lt 1 ] ); do content=$(sed -n "$i{p;q}" ".""$nameext""_files"); cont=${content%*/*}; if ( [ -d "$cont" ] || [ -f "$cont" ] ); then echo "file/folder exists"; hits=$((hits+1)); fi; i=$((i+1)); done; rm ".""$nameext""_files"; overw="0"; if [ $hits -gt 0 ]; then echo "file/folder exists"; overw=$(kdialog --warningyesno "Existing data must be overwritten to extract this archive. Do you want to overwrite them?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; if [ "$overw" == "0" ]; then unzip -o "$nameext"; kdialog --title "Extract" --msgbox "Extraction done!"; else kdialog --title "Extract" --error "Extraction aborted!"; fi;' 'dummy-param' %F
+Icon=application-x-archive
+Name=Extract here
+Name[de]=Hier entpacken
+Name[es]=Extraer aquí
+Name[it]=Estrai qui
+Name[fr]=Extraire ici
+Name[zh_CN]=在此解压缩
+Name[pl]=Rozpakuj tutaj
+Name[pt_BR]=Extrair aqui
+Name[cs]=Rozbalit sem
+Name[tr]=Buraya Aç
+Name[da]=Pak ud her
+
+[Desktop Action extract_to_folder]
+Exec=bash -c 'nameext=$(basename "$1"); name=${nameext%.*}; name2=${name%.*}; dir=$(dirname "$1"); cd "$dir"; overw="0"; if ( [ -d "$name2" ] || [ -f "$name2" ] ); then echo "file/folder exists"; overw=$(kdialog --warningyesno "Existing data must be overwritten to extract this archive. Do you want to overwrite them?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; if [ "$overw" == "0" ]; then mkdir "$name2"; unzip -o "$nameext" -d "$name2"; kdialog --title "Extract" --msgbox "Extraction done!"; else kdialog --title "Extract" --error "Extraction aborted!"; fi;' 'dummy-param' %F
+Icon=application-x-archive
+Name=Extract to subfolder
+Name[de]=Entpacken in Unterordner
+Name[es]=Extraer en subcarpeta
+Name[it]=Estrai nella sottocartella
+Name[fr]=Extraire dans un sous-répertoire
+Name[zh_CN]=解压缩到子文件夹
+Name[pl]=Rozpakuj do podfolderu
+Name[pt_BR]=Extrair na subpasta
+Name[cs]=Rozbalit do adresáře
+Name[tr]=Alt Dizine Aç
+Name[da]=Pak ud til undermappe
+
+[Desktop Action extract_to]
+Exec=bash -c 'nameext=$(basename "$1"); nameext2=$(getdir=$(kdialog --title "Enter path" --getexistingdirectory ~/); echo "$getdir"; "$getdir"); dir=$(dirname "$1"); cd "$nameext2"; unzip -Z -1 "$dir"/"$nameext" > ".""$nameext""_files"; rowcount=$(cat ".""$nameext""_files" | wc -l); i="1"; hits="0"; while ( [ $i -lt $((rowcount+1)) ] && [ $hits -lt 1 ] ); do content=$(sed -n "$i{p;q}" ".""$nameext""_files"); cont=${content%*/*}; if ( [ -d "$cont" ] || [ -f "$cont" ] ); then echo "file/folder exists"; hits=$((hits+1)); fi; i=$((i+1)); done; rm ".""$nameext""_files"; overw="0"; if [ $hits -gt 0 ]; then echo "file/folder exists"; overw=$(kdialog --warningyesno "Existing data must be overwritten to extract this archive. Do you want to overwrite them?"; case $? in 0) ow="0";; 1) ow="1";; esac; echo "$ow"; "$ow"); fi; echo $overw; cd "$dir"; if [ "$overw" == "0" ]; then unzip -o "$nameext" -d "$nameext2"; kdialog --title "Extract" --msgbox "Extraction done!"; else kdialog --title "Extract" --error "Extraction aborted!"; fi;' 'dummy-param' %F
+Icon=application-x-archive
+Name=Extract to...
+Name[de]=Entpacken nach...
+Name[es]=Extraer en...
+Name[it]=Estrai in...
+Name[fr]=Extraire dans...
+Name[zh_CN]=解压缩到...
+Name[pl]=Rozpakuj do...
+Name[pt_BR]=Extrair em...
+Name[cs]=Rozbalit do...
+Name[tr]=Farklı Bir Konuma Aç...
+Name[da]=Pak ud til...
